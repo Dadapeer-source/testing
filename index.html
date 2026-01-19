@@ -1,36 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, intial-scale=1.0">
-	<title>Basic page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Media Player</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+.container {
+    background: rgba(0,0,0,0.6);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px cyan;
+    text-align: center;
+    animation: fadeIn 1.5s ease;
+}
+
+h1 {
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px cyan;
+}
+
+video, audio {
+    width: 100%;
+    max-width: 400px;
+    margin: 15px 0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #00ffff;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+video:hover, audio:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #00ffff;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
 </head>
+
 <body>
-	<nav>
-		<a href="index.html">Home</a>
-		<a href="about.html">About</a>
-		<a href="contact.html">Contact</a>
 
-	</nav>
-	<h2>Welcome</h2>
-	<p>This is my new content</p>
-<img src="photo.jpeg" alt="my pic" width="600" height="500" loading="lazy">
-	
-<p>This is my Image</p>
+<div class="container">
+    <h1>Welcome</h1>
 
+    <video id="videoPlayer" controls>
+        <source src="new.mp4" type="video/mp4">
+    </video>
 
+    <audio id="audioPlayer" controls>
+        <source src="Fear.mp3" type="audio/mpeg">
+    </audio>
+</div>
 
-	
+<script>
+function playClickSound() {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
 
+    oscillator.type = "square";
+    oscillator.frequency.value = 800;
+    gain.gain.value = 0.1;
 
-	<video controls>
-		<source src="new.mp4" type="video/mp4">
-	</video>
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
 
-<audio controls>
-		<source src="Fear.mp3" type="audio/mpeg">
-	</audio>
-	
+    oscillator.start();
+    setTimeout(() => oscillator.stop(), 80);
+}
+
+document.getElementById("videoPlayer").addEventListener("play", playClickSound);
+document.getElementById("videoPlayer").addEventListener("pause", playClickSound);
+
+document.getElementById("audioPlayer").addEventListener("play", playClickSound);
+document.getElementById("audioPlayer").addEventListener("pause", playClickSound);
+</script>
+
 </body>
-
 </html>
